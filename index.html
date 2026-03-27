@@ -1373,15 +1373,16 @@ ${code}
    .replace(/```\n?/g, '')
    .trim();
     let parsed;
+// Remove all markdown code fences inside JSON values
+const superCleaned = cleaned.replace(/```[a-z]*\n?/g, '').replace(/```/g, '');
 try {
-  parsed = JSON.parse(cleaned);
+  parsed = JSON.parse(superCleaned);
 } catch (e) {
+  const match = superCleaned.match(/\{[\s\S]*\}/);
   try {
-    const match = cleaned.match(/\{[\s\S]*\}/);
-    if (match) parsed = JSON.parse(match[0]);
-    else parsed = { findings: [], summary: cleaned };
+    parsed = JSON.parse(match[0]);
   } catch(e2) {
-    parsed = { findings: [], summary: cleaned };
+    parsed = { findings: [], summary: "Error: " + superCleaned.substring(0, 200) };
   }
 }
 
