@@ -25,7 +25,7 @@ app.post('/api/scan', async (req, res) => {
         'HTTP-Referer': 'http://localhost:3000'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku',
+        model: 'anthropic/claude-3.5-haiku',
         max_tokens: 2000,
         messages: req.body.messages
       }),
